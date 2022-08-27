@@ -34,7 +34,7 @@ function love.update(dt)
     end
 
     --rotate the outer pointer around the center following the mouse
-    angle = math.atan2(love.mouse.getY() - windowHeight / 2, love.mouse.getX() - windowWidth / 2)
+    angle = math.atan2(love.mouse.getY() - centerY, love.mouse.getX() - centerX)
 end
 
 function love.draw()
