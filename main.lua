@@ -14,14 +14,32 @@ function love.load()
     centerX = windowWidth/2
 	centerY = windowHeight/2
 
-
     time_remaining = 15
     score = 5
     level = 1
+
+    --create table of pieces
+    pieces = {
+        love.graphics.newImage("bishop.png") , 
+        love.graphics.newImage("rook.png") , 
+        love.graphics.newImage("knight.png") , 
+        love.graphics.newImage("pawn.png")
+    }
+
+    piece_index = 1
+
+end
+
+function love.wheelmoved(x, y)
+    if y > 0 then
+        wheel_up = true
+    elseif y < 0 then
+        wheel_down = true
+    end
+
 end
 
 function love.update(dt)
-
     _G.dt = dt
     --round to two decimal places
     time_remaining = math.floor((time_remaining - dt) * 100) / 100
@@ -38,6 +56,25 @@ function love.update(dt)
     --rotate the outer pointer around the center following the mouse
     angle = math.atan2((love.mouse.getX() - centerX),( centerY - love.mouse.getY()))
 
+    --when the player scrolls, increase or decrease the index of pieces
+    if wheel_up and piece_index < 4 then
+        piece_index = (piece_index + 1) % 5
+        wheel_up = false
+    elseif wheel_down and piece_index > 1 then
+        piece_index = (piece_index - 1) % 5
+        wheel_down = false
+    end
+
+    --when the player clicks 1 through 4 on the keyboard, set the piece index to that number
+    if love.keyboard.isDown("1") then
+        piece_index = 1
+    elseif love.keyboard.isDown("2") then
+        piece_index = 2
+    elseif love.keyboard.isDown("3") then
+        piece_index = 3
+    elseif love.keyboard.isDown("4") then
+        piece_index = 4
+    end
 
 end
 
@@ -62,7 +99,11 @@ function love.draw()
     love.graphics.circle("fill", 400, 300, 15)
     --draw outer circle
     love.graphics.setLineWidth(5)
-    love.graphics.circle("line", 400, 300, 30)
+    love.graphics.circle("line", 400, 300, 80)
+
+    --draw piece
+    love.graphics.draw(pieces[piece_index], centerX - pieces[piece_index]:getWidth()/2 * .2, centerY - pieces[piece_index]:getHeight()/2 * .2, 0, 0.2, 0.2)
+
 
     --rotate around the center
     love.graphics.translate(centerX, centerY)
@@ -73,5 +114,8 @@ function love.draw()
     love.graphics.line(400, 300, 400, 270)
     love.graphics.rotate(angle)
 
+    love.graphics.origin()
+
+    love.graphics.print("Piece Index: "..piece_index, 40, 60)
 
 end
