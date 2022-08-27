@@ -6,7 +6,7 @@ function love.load()
 
     --lock mouse to window
     love.mouse.setGrabbed(true)
-    love.mouse.setVisible(false)
+    love.mouse.setVisible(true)
 
     windowHeight = love.graphics.getHeight()
     windowWidth = love.graphics.getWidth()
@@ -21,6 +21,8 @@ function love.load()
 end
 
 function love.update(dt)
+
+    _G.dt = dt
     --round to two decimal places
     time_remaining = math.floor((time_remaining - dt) * 100) / 100
 
@@ -34,7 +36,9 @@ function love.update(dt)
     end
 
     --rotate the outer pointer around the center following the mouse
-    angle = math.atan2(love.mouse.getY() - centerY, love.mouse.getX() - centerX)
+    angle = math.atan2((love.mouse.getX() - centerX),( centerY - love.mouse.getY()))
+
+
 end
 
 function love.draw()
@@ -68,8 +72,6 @@ function love.draw()
     love.graphics.setColor(255, 0, 0)
     love.graphics.line(400, 300, 400, 270)
     love.graphics.rotate(angle)
-    
-
 
 
 end
