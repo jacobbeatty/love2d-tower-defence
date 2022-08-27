@@ -4,6 +4,10 @@ function love.load()
     love.window.setTitle("Game")
     love.graphics.setBackgroundColor(255, 255, 255)
 
+    --lock mouse to window
+    love.mouse.setGrabbed(true)
+    love.mouse.setVisible(false)
+
     windowHeight = love.graphics.getHeight()
     windowWidth = love.graphics.getWidth()
 
