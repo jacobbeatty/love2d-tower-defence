@@ -1,4 +1,5 @@
 love = require("love")
+local Projectile = require("projectile")
 
 function love.load()
     love.window.setTitle("Game")
@@ -30,6 +31,24 @@ function love.load()
 
 end
 
+-- function Projectile(start_x,start_y)
+--     return {
+--         starting_pos = {x = start_x, y = start_y},
+--         current_pos = {x, y},
+--         direction = {x, y},
+--         color = "",
+--         speed = 0,
+--         pieces_index = ""
+--     }
+-- end
+
+-- function EnemyProjectile(start_x, start_y)
+--     local projectile = Projectile(start_x, start_y)
+--     projectile.damage_dealt = 0
+--     return projectile
+-- end
+    
+
 function love.wheelmoved(x, y)
     if y > 0 then
         wheel_up = true
@@ -54,7 +73,7 @@ function love.update(dt)
     end
 
     --rotate the outer pointer around the center following the mouse
-    angle = math.atan2((love.mouse.getX() - centerX),( centerY - love.mouse.getY()))
+    angle = math.atan2((love.mouse.getX() - centerX),(centerY - love.mouse.getY()))
 
     --when the player scrolls, increase or decrease the index of pieces
     if wheel_up and piece_index < 4 then
@@ -117,5 +136,9 @@ function love.draw()
     love.graphics.origin()
 
     love.graphics.print("Piece Index: "..piece_index, 40, 60)
+
+    
+    -- local testProj = EnemyProjectile(40,80)
+    -- love.graphics.print(testProj.damage_dealt, 40, 80)
 
 end
