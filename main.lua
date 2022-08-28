@@ -29,25 +29,19 @@ function love.load()
 
     piece_index = 1
 
+    -- table of projectiles currently on the board
+    BISHOP = 1
+    ROOK = 2
+    KNIGHT = 3
+    PAWN = 4
+    projectiles = {}
+
 end
 
--- function Projectile(start_x,start_y)
---     return {
---         starting_pos = {x = start_x, y = start_y},
---         current_pos = {x, y},
---         direction = {x, y},
---         color = "",
---         speed = 0,
---         pieces_index = ""
---     }
--- end
-
--- function EnemyProjectile(start_x, start_y)
---     local projectile = Projectile(start_x, start_y)
---     projectile.damage_dealt = 0
---     return projectile
--- end
-    
+-- Draws projectile based on it's current position
+function drawProjectile(p)
+    love.graphics.draw(pieces[p.pieces_index], p.current_pos.x, p.current_pos.y, 0, 0.1, 0.1)
+end
 
 function love.wheelmoved(x, y)
     if y > 0 then
@@ -137,8 +131,8 @@ function love.draw()
 
     love.graphics.print("Piece Index: "..piece_index, 40, 60)
 
-    
-    -- local testProj = EnemyProjectile(40,80)
-    -- love.graphics.print(testProj.damage_dealt, 40, 80)
+
+    -- local testProj = EnemyProjectile(100,120,PAWN)
+    -- drawProjectile(testProj)
 
 end
