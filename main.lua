@@ -29,22 +29,24 @@ function love.load()
 
     piece_index = 1
 
-    -- table of projectiles currently on the board
+    -- CONSTANTS to refer to projectiles instead of using raw numbers
     BISHOP = 1
     ROOK = 2
     KNIGHT = 3
     PAWN = 4
+
+    -- Table containing existing projectiles, add to it to make new projectiles appear on screen
     projectiles = {}
 
-    -- -- Test projectiles
-    -- table.insert(projectiles, EnemyProjectile(100,100,PAWN))
-    -- table.insert(projectiles, EnemyProjectile(200,200,PAWN))
-    -- table.insert(projectiles, EnemyProjectile(300,300,BISHOP))
+    -- Test projectiles
+    table.insert(projectiles, EnemyProjectile(100,100,PAWN))
+    table.insert(projectiles, EnemyProjectile(200,200,PAWN))
+    table.insert(projectiles, EnemyProjectile(300,300,BISHOP))
     
-    -- -- Moving projectile test
-    -- projectiles[1].speed = 1
-    -- projectiles[1].direction.x = 1
-    -- projectiles[1].direction.y = 1
+    -- Moving projectile test
+    projectiles[1].speed = 0.1
+    projectiles[1].direction.x = 1
+    projectiles[1].direction.y = -1
 end
 
 -- Draws projectile based on it's current position
@@ -99,9 +101,10 @@ function love.update(dt)
     end
 
     -- Update projectile positions based on their speed and direction
+    -- NOTE: for some reason y axis is inverted, accounting for this by subtracting movement
     for i, p in ipairs(projectiles) do
         p.current_pos.x = p.current_pos.x + p.speed * p.direction.x
-        p.current_pos.y = p.current_pos.y + p.speed * p.direction.y
+        p.current_pos.y = p.current_pos.y - p.speed * p.direction.y
     end 
 
 end
@@ -129,7 +132,7 @@ function love.draw()
     love.graphics.setLineWidth(5)
     love.graphics.circle("line", 400, 300, 80)
 
-    --draw piece
+    --draw character piece
     love.graphics.draw(pieces[piece_index], centerX - pieces[piece_index]:getWidth()/2 * .2, centerY - pieces[piece_index]:getHeight()/2 * .2, 0, 0.2, 0.2)
 
 
@@ -146,7 +149,7 @@ function love.draw()
 
     love.graphics.print("Piece Index: "..piece_index, 40, 60)
 
-    -- Draw each existing projectile
+    -- Draw each existing projectile at its current position
     for i, p in ipairs(projectiles) do
         drawProjectile(p)
     end 
