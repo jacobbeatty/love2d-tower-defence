@@ -36,6 +36,15 @@ function love.load()
     PAWN = 4
     projectiles = {}
 
+    -- -- Test projectiles
+    -- table.insert(projectiles, EnemyProjectile(100,100,PAWN))
+    -- table.insert(projectiles, EnemyProjectile(200,200,PAWN))
+    -- table.insert(projectiles, EnemyProjectile(300,300,BISHOP))
+    
+    -- -- Moving projectile test
+    -- projectiles[1].speed = 1
+    -- projectiles[1].direction.x = 1
+    -- projectiles[1].direction.y = 1
 end
 
 -- Draws projectile based on it's current position
@@ -89,6 +98,12 @@ function love.update(dt)
         piece_index = 4
     end
 
+    -- Update projectile positions based on their speed and direction
+    for i, p in ipairs(projectiles) do
+        p.current_pos.x = p.current_pos.x + p.speed * p.direction.x
+        p.current_pos.y = p.current_pos.y + p.speed * p.direction.y
+    end 
+
 end
 
 function love.draw()
@@ -131,8 +146,8 @@ function love.draw()
 
     love.graphics.print("Piece Index: "..piece_index, 40, 60)
 
-
-    -- local testProj = EnemyProjectile(100,120,PAWN)
-    -- drawProjectile(testProj)
-
+    -- Draw each existing projectile
+    for i, p in ipairs(projectiles) do
+        drawProjectile(p)
+    end 
 end

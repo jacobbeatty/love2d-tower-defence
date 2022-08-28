@@ -3,7 +3,7 @@ function Projectile(start_x,start_y, type_index)
     return {
         starting_pos = {x = start_x, y = start_y},
         current_pos = {x = start_x, y = start_y},
-        direction = {x, y},
+        direction = {x=0, y=0},
         color = "",
         speed = 0,
         pieces_index = type_index
