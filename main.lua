@@ -50,54 +50,32 @@ function love.load()
     bishopRB = EnemyProjectile(windowWidth-45,windowHeight-45,BISHOP)
 
     -- initialize the projectiles table
-    projectiles={bishopL}
+    projectiles={}
 
-    --give each projectile the correct direction
     bishopL.speed = 2
-    bishopL.direction.x = 1
-    bishopL.direction.y = -1
+    bishopL.direction = directionToCenter(bishopL)
     bishopL.damage_dealt = 1
-
-    bishopR.speed = 2
-    bishopR.direction.x = -1
-    bishopR.direction.y = -1
-    bishopR.damage_dealt = 1
-
-    bishopLB.speed = 2
-    bishopLB.direction.x = 1
-    bishopLB.direction.y = 1
-    bishopLB.damage_dealt = 1
-
-    bishopRB.speed = 2
-    bishopRB.direction.x = -1
-    bishopRB.direction.y = 1
-    bishopRB.damage_dealt = 1
-
-    rookL.speed = 2
-    rookL.direction.x = 1
-    rookL.direction.y = 0
-    rookL.damage_dealt = 1
-
-    rookR.speed = 2
-    rookR.direction.x = -1
-    rookR.direction.y = 0
-    rookR.damage_dealt = 1
-
-    rookT.speed = 2
-    rookT.direction.x = 0
-    rookT.direction.y = -1
-    rookT.damage_dealt = 1
-
-    rookB.speed = 2
-    rookB.direction.x = 0
-    rookB.direction.y = 1
-    rookB.damage_dealt = 1
 
 end
 
 -- Draws projectile based on it's current position
 function drawProjectile(p)
     love.graphics.draw(pieces[p.pieces_index], p.current_pos.x, p.current_pos.y, 0, 0.1, 0.1)
+end
+
+-- Returns normalized direction to the center of the screen from given projectile
+function directionToCenter(p)
+    -- generating direction towards center
+    local directionX=p.current_pos.x + centerX
+    local directionY=p.current_pos.y - centerY
+    -- calculating magnitude, sqrt(x^2 + y^2)
+    magnitude = math.sqrt(directionX*directionX + directionY*directionY);
+    -- checking if magnitude is zero
+    if magnitude ~= 0 then
+        return {x=directionX/magnitude, y=directionY/magnitude}
+    end
+    -- If magnitude is zero, then return raw direction
+    return {x=directionX,y=directionY}
 end
 
 function love.wheelmoved(x, y)
@@ -145,7 +123,7 @@ function love.update(dt)
         piece_index = 4
     end
 
-    --draw a random projectile every 2 seconds
+    -- draw a random projectile every 2 seconds
     spawn_timer = spawn_timer - dt
     if spawn_timer <= 0 then
         random_projectile = math.random(1, 8)
@@ -174,22 +152,19 @@ function love.update(dt)
     for i, p in ipairs(projectiles) do
         p.current_pos.x = p.current_pos.x + p.speed * p.direction.x
         p.current_pos.y = p.current_pos.y - p.speed * p.direction.y
-    end 
-
-    --if projectile hits player deal damage and remove projectile
-    for i, p in ipairs(projectiles) do
+    
+        --if projectile hits player deal damage and remove projectile
         if p.current_pos.x > centerX - 50 and p.current_pos.x < centerX + 50 and p.current_pos.y > centerY - 50 and p.current_pos.y < centerY + 50 then
             score = score - p.damage_dealt
             table.remove(projectiles, i)
         end
-    end
 
-    --if projectile goes off screen remove it
-    for i, p in ipairs(projectiles) do
+        --if projectile goes off screen remove it
         if p.current_pos.x > windowWidth or p.current_pos.x < 0 or p.current_pos.y > windowHeight or p.current_pos.y < 0 then
             table.remove(projectiles, i)
         end
-    end
+
+    end 
 
     --if the health reaches 0, end the game
     if score <= 0 then
@@ -227,6 +202,7 @@ function love.draw()
     love.graphics.rotate(angle)
     --reset rotation
     love.graphics.origin()
+
     --draw each existing projectile at its current position
     --NOTE: There's a bug somewhere. It's not drawing all of them from update.
     for i, p in ipairs(projectiles) do
