@@ -67,8 +67,9 @@ end
 -- Returns normalized direction to the center of the screen from given projectile
 function directionToCenter(p)
     -- generating direction towards center
-    local directionX=p.current_pos.x + centerX
+    local directionX=p.current_pos.x - centerX
     local directionY=p.current_pos.y - centerY
+
     -- calculating magnitude, sqrt(x^2 + y^2)
     magnitude = math.sqrt(directionX*directionX + directionY*directionY);
     -- checking if magnitude is zero
@@ -128,53 +129,63 @@ function love.update(dt)
     spawn_timer = spawn_timer - dt
     if spawn_timer <= 0 then
         random_projectile = math.random(1, 8)
+        -- random_projectile = 5
         if random_projectile == 1 then
             ep = EnemyProjectile(0,0,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = 1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 2 then
             ep = EnemyProjectile(windowWidth-45,0,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = -1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 3 then
             ep = EnemyProjectile(0,windowHeight-45,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = 1, y = 1}
             ep.damage_dealt = 1
         elseif random_projectile == 4 then
             ep = EnemyProjectile(windowWidth-45,windowHeight-45,BISHOP)
             table.insert(projectiles, ep )
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = -1, y = 1}
             ep.damage_dealt = 1
         elseif random_projectile == 5 then
-            ep = EnemyProjectile(windowWidth/2,0,ROOK)
+            ep = EnemyProjectile(0,windowHeight/2,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = 1, y = 0}
+            print(ep.direction.x ..""..  ep.direction.y)
             ep.damage_dealt = 1
         elseif random_projectile == 6 then
             ep = EnemyProjectile(windowWidth-45,windowHeight/2,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = -1, y = 0}
             ep.damage_dealt = 1
         elseif random_projectile == 7 then
             ep = EnemyProjectile(windowWidth/2,0,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = 0, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 8 then
             ep =EnemyProjectile(windowWidth/2,windowHeight-45,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 2
-            ep.direction = directionToCenter(ep)
+            ep.speed = 5
+            -- ep.direction = directionToCenter(ep)
+            ep.direction = {x = 0, y = 1}
             ep.damage_dealt = 1
         end
         spawn_timer = 2
@@ -187,7 +198,9 @@ function love.update(dt)
         p.current_pos.y = p.current_pos.y - p.speed * p.direction.y
     
         --if projectile hits player deal damage and remove projectile
-        if p.current_pos.x > centerX - 50 and p.current_pos.x < centerX + 50 and p.current_pos.y > centerY - 50 and p.current_pos.y < centerY + 50 then
+        -- if p.current_pos.x > centerX - 50 and p.current_pos.x < centerX + 50 and p.current_pos.y > centerY - 50 and p.current_pos.y < centerY + 50 then
+        --BUG: Some finish early because of love2d sucking ass with how coords are handled
+        if (math.abs(p.current_pos.x - centerX) == 80) or math.abs(p.current_pos.y - centerY) == 80  then 
             score = score - p.damage_dealt
             table.remove(projectiles, i)
         end
