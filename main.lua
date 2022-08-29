@@ -51,6 +51,7 @@ function love.load()
 
     -- initialize the projectiles table
     projectiles={}
+    
 
     bishopL.speed = 2
     bishopL.direction = directionToCenter(bishopL)
@@ -128,21 +129,53 @@ function love.update(dt)
     if spawn_timer <= 0 then
         random_projectile = math.random(1, 8)
         if random_projectile == 1 then
-            table.insert(projectiles, bishopL)
+            ep = EnemyProjectile(0,0,BISHOP)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 2 then
-            table.insert(projectiles, bishopR)
+            ep = EnemyProjectile(windowWidth-45,0,BISHOP)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 3 then
-            table.insert(projectiles, bishopLB)
+            ep = EnemyProjectile(0,windowHeight-45,BISHOP)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 4 then
-            table.insert(projectiles, bishopRB)
+            ep = EnemyProjectile(windowWidth-45,windowHeight-45,BISHOP)
+            table.insert(projectiles, ep )
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 5 then
-            table.insert(projectiles, rookL)
+            ep = EnemyProjectile(windowWidth/2,0,ROOK)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 6 then
-            table.insert(projectiles, rookR)
+            ep = EnemyProjectile(windowWidth-45,windowHeight/2,ROOK)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 7 then
-            table.insert(projectiles, rookT)
+            ep = EnemyProjectile(windowWidth/2,0,ROOK)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         elseif random_projectile == 8 then
-            table.insert(projectiles, rookB)
+            ep =EnemyProjectile(windowWidth/2,windowHeight-45,ROOK)
+            table.insert(projectiles, ep)
+            ep.speed = 2
+            ep.direction = directionToCenter(ep)
+            ep.damage_dealt = 1
         end
         spawn_timer = 2
     end
