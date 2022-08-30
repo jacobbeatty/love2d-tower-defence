@@ -195,9 +195,9 @@ function love.update(dt)
         p.current_pos.x = p.current_pos.x + p.speed * p.direction.x
         p.current_pos.y = p.current_pos.y - p.speed * p.direction.y
     
-        --if projectile hits player deal damage and remove projectile
-        -- if p.current_pos.x > centerX - 50 and p.current_pos.x < centerX + 50 and p.current_pos.y > centerY - 50 and p.current_pos.y < centerY + 50 then
-        -- if (math.abs(p.current_pos.x - centerX) == 80) or math.abs(p.current_pos.y - centerY) == 80  then 
+        -- if projectile hits player deal damage and remove projectile
+        -- Finds distance between projectile and center circle, determines if it is in radius distance +- some error
+        -- Second argument of distance expects projectile, so putting existing data into projectile format
         if equals(distance(p,{current_pos={x=centerX,y=centerY}}), 80, 170) then
             score = score - p.damage_dealt
             table.remove(projectiles, i)
