@@ -316,24 +316,24 @@ function love.update(dt)
 end
 
 function love.draw()
-    --draw zones
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(0, 0, 0)
-    --straight up
-    love.graphics.line(centerX -40, centerY, centerX-40, 0)
-    love.graphics.line(centerX +40, centerY, centerX+40, 0)
-    --straight down
-    love.graphics.line(centerX -40, centerY, centerX-40, windowHeight)
-    love.graphics.line(centerX +40, centerY, centerX+40, windowHeight)
+    -- --draw zones
+    -- love.graphics.setLineWidth(1)
+    -- love.graphics.setColor(0, 0, 0)
+    -- --straight up
+    -- love.graphics.line(centerX -40, centerY, centerX-40, 0)
+    -- love.graphics.line(centerX +40, centerY, centerX+40, 0)
+    -- --straight down
+    -- love.graphics.line(centerX -40, centerY, centerX-40, windowHeight)
+    -- love.graphics.line(centerX +40, centerY, centerX+40, windowHeight)
 
-    --straight left
-    love.graphics.line(centerX, centerY + 40, 0, centerY + 40)
-    love.graphics.line(centerX, centerY - 40, 0, centerY - 40)
+    -- --straight left
+    -- love.graphics.line(centerX, centerY + 40, 0, centerY + 40)
+    -- love.graphics.line(centerX, centerY - 40, 0, centerY - 40)
 
 
-    --straight right
-    love.graphics.line(centerX, centerY + 40, windowWidth, centerY + 40)
-    love.graphics.line(centerX, centerY - 40, windowWidth, centerY - 40)
+    -- --straight right
+    -- love.graphics.line(centerX, centerY + 40, windowWidth, centerY + 40)
+    -- love.graphics.line(centerX, centerY - 40, windowWidth, centerY - 40)
 
 
 
