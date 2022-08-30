@@ -283,7 +283,7 @@ function love.update(dt)
             if i ~= j and equals(distance(p,p2), 0, 10) then
                 --check if pieces are the same
                 -- doesnt work for some reason
-                if p.piece_index == p2.piece_index then
+                if p.pieces_index == p2.pieces_index then
                     --if they are, remove both
                     table.remove(projectiles, i)
                     table.remove(projectiles, j)
