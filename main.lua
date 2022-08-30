@@ -206,56 +206,56 @@ function love.update(dt)
         if random_projectile == 1 then
             ep = EnemyProjectile(0,0,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 2 then
             ep = EnemyProjectile(windowWidth-45,0,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = -1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 3 then
             ep = EnemyProjectile(0,windowHeight-45,BISHOP)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 1, y = 1}
             ep.damage_dealt = 1
         elseif random_projectile == 4 then
             ep = EnemyProjectile(windowWidth-45,windowHeight-45,BISHOP)
             table.insert(projectiles, ep )
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = -1, y = 1}
             ep.damage_dealt = 1
         elseif random_projectile == 5 then
             ep = EnemyProjectile(0,windowHeight/2,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 1, y = 0}
             ep.damage_dealt = 1
         elseif random_projectile == 6 then
             ep = EnemyProjectile(windowWidth-45,windowHeight/2,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = -1, y = 0}
             ep.damage_dealt = 1
         elseif random_projectile == 7 then
             ep = EnemyProjectile(windowWidth/2,0,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 0, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 8 then
             ep =EnemyProjectile(windowWidth/2,windowHeight-45,ROOK)
             table.insert(projectiles, ep)
-            ep.speed = 5
+            ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 0, y = 1}
             ep.damage_dealt = 1
@@ -275,6 +275,20 @@ function love.update(dt)
         if equals(distance(p,{current_pos={x=centerX,y=centerY}}), 80, 170) then
             score = score - p.damage_dealt
             table.remove(projectiles, i)
+        end
+
+        --PLEASE FIX ME
+        --if a projectile hits another projectile, remove both
+        for j, p2 in ipairs(projectiles) do
+            if i ~= j and equals(distance(p,p2), 0, 10) then
+                --check if pieces are the same
+                -- doesnt work for some reason
+                if p.piece_index == p2.piece_index then
+                    --if they are, remove both
+                    table.remove(projectiles, i)
+                    table.remove(projectiles, j)
+                end
+            end
         end
 
         --if projectile goes off screen remove it
