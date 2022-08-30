@@ -211,14 +211,14 @@ function love.update(dt)
             ep.direction = {x = 1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 2 then
-            ep = EnemyProjectile(windowWidth-45,0,BISHOP)
+            ep = EnemyProjectile(windowWidth,0,BISHOP)
             table.insert(projectiles, ep)
             ep.speed = 3
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = -1, y = -1}
             ep.damage_dealt = 1
         elseif random_projectile == 3 then
-            ep = EnemyProjectile(0,windowHeight-45,BISHOP)
+            ep = EnemyProjectile(0,windowHeight,BISHOP)
             table.insert(projectiles, ep)
             ep.speed = 3
             -- ep.direction = directionToCenter(ep)
@@ -260,7 +260,7 @@ function love.update(dt)
             ep.direction = {x = 0, y = 1}
             ep.damage_dealt = 1
         end
-        spawn_timer = 2
+        spawn_timer = .5
     end
 
     -- Update projectile positions based on their speed and direction
