@@ -3,7 +3,7 @@ function love.conf(t)
     t.window.title = "Game"
     --make window borderless
     t.window.borderless = true
-    t.window.width = 1000
-    t.window.height = 1000
+    t.window.width = 800
+    t.window.height = 800
     t.window.centered = true
 end

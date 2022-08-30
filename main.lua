@@ -19,7 +19,8 @@ function love.load()
     time_remaining = 15
     score = 99
     level = 1
-    spawn_timer = 2
+    TIMER_START = 2
+    spawn_timer = TIMER_START
     
 
 
@@ -167,7 +168,9 @@ function love.update(dt)
     --round to two decimal places
     time_remaining = math.floor((time_remaining - dt) * 100) / 100
     if time_remaining < 0 then
-        time_remaining = 0
+        time_remaining = 15
+
+        level = level + 1
     end
 
     --close the game if the player presses escape
@@ -260,7 +263,7 @@ function love.update(dt)
             ep.direction = {x = 0, y = 1}
             ep.damage_dealt = 1
         end
-        spawn_timer = .5
+        spawn_timer = TIMER_START - level*.1
     end
 
     -- Update projectile positions based on their speed and direction
@@ -287,6 +290,7 @@ function love.update(dt)
                     --if they are, remove both
                     table.remove(projectiles, i)
                     table.remove(projectiles, j)
+                    score = score + 1
                 end
             end
         end
