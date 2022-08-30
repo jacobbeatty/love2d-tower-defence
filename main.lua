@@ -1,5 +1,6 @@
 love = require("love")
 local Projectile = require("projectile")
+local Pointer = require("playerpointer")
 
 function love.load()
     love.window.setTitle("Game")
@@ -40,6 +41,7 @@ function love.load()
 
     -- initialize the projectiles table
     projectiles={}
+    player_pointer = PlayerPointer(centerX,centerY)
 end
 
 -- Draws projectile based on it's current position
@@ -215,6 +217,12 @@ function love.update(dt)
         love.event.quit()
     end
 
+    -- Locking player pointer to a circle
+    -- https://love2d.org/forums/viewtopic.php?t=82805
+    -- NOTE: This math is really messed up, may have to do with angle calculation? Works for now.
+    player_pointer.current_pos.y = centerX - 90 * math.cos(angle)
+    player_pointer.current_pos.x = centerY + 90 * math.sin(angle)
+
 end
 
 function love.draw()
@@ -241,14 +249,16 @@ function love.draw()
 	love.graphics.rotate(angle)
 	love.graphics.translate(-centerX, -centerY)
     --draw outer pointer
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.line(centerX, centerY, centerX + 10, centerY - 10)
-    love.graphics.rotate(angle)
-    --reset rotation
     love.graphics.origin()
+    -- love.graphics.setColor(255, 0, 0)
+    -- love.graphics.line(centerX, centerY, centerX + 10, centerY - 10)
+    -- love.graphics.rotate(angle)
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.circle("fill", player_pointer.current_pos.x, player_pointer.current_pos.y, 5)
+    --reset rotation
+    
 
     --draw each existing projectile at its current position
-    --NOTE: There's a bug somewhere. It's not drawing all of them from update.
     for i, p in ipairs(projectiles) do
         drawProjectile(p)
     end 
