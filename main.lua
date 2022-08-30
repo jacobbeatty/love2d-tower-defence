@@ -90,32 +90,73 @@ function love.wheelmoved(x, y)
 
 end
 
---detect if mouse is clicked
+function clamp(min, val, max)
+    return math.max(min, math.min(val, max));
+end
+
+
+-- detect if mouse is clicked
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then
-        if love.mouse.getX() < centerX and love.mouse.getY() < centerY then
-            p = EnemyProjectile(centerX - 80, centerY - 80 , PAWN)
+        --upper left quadrant
+        if love.mouse.getX() < centerX - 40 and love.mouse.getY() < centerY - 40 then
+            print("upper left")
+            p = EnemyProjectile(centerX - 80, centerY - 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = -1, y = 1}
             p.damage_dealt = 0.1
-        elseif love.mouse.getX() > centerX and love.mouse.getY() < centerY then
-            p = EnemyProjectile(centerX + 80, centerY - 80 , PAWN)
+        --horizontal left
+        elseif love.mouse.getX() < centerX - 40 and (love.mouse.getY() > centerY - 40) and (love.mouse.getY() < centerY + 40) then
+            print("left")
+            p = EnemyProjectile(centerX - 100, centerY , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
-            p.direction = {x = 1, y = 1}
+            p.direction = {x = -1, y = 0}
             p.damage_dealt = 0.1
-        elseif love.mouse.getX() < centerX and love.mouse.getY() > centerY then
-            p = EnemyProjectile(centerX - 80, centerY + 80 , PAWN)
+        --lower left quadrant
+        elseif love.mouse.getX() < centerX - 40 and love.mouse.getY() > centerY + 40 then
+            p = EnemyProjectile(centerX - 80, centerY + 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = -1, y = -1}
             p.damage_dealt = 0.1
-        elseif love.mouse.getX() > centerX and love.mouse.getY() > centerY then
-            p = EnemyProjectile(centerX + 80, centerY + 80 , PAWN)
+        --upper right quadrant
+        elseif love.mouse.getX() > centerX + 40 and love.mouse.getY() < centerY - 40 then
+            p = EnemyProjectile(centerX + 80, centerY - 80 , piece_index)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 1, y = 1}
+            p.damage_dealt = 0.1
+        --horizontal right
+        elseif love.mouse.getX() > centerX + 40 and (love.mouse.getY() > centerY - 40) and (love.mouse.getY() < centerY + 40) then
+            p = EnemyProjectile(centerX + 100, centerY , piece_index)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 1, y = 0}
+            p.damage_dealt = 0.1
+        --lower right quadrant
+        elseif love.mouse.getX() > centerX + 40 and love.mouse.getY() > centerY + 40 then
+            p = EnemyProjectile(centerX + 80, centerY + 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 1, y = -1}
+            p.damage_dealt = 0.1
+        --vertical up
+        elseif (love.mouse.getX() > centerX - 40) and (love.mouse.getX() < centerX + 40) and love.mouse.getY() < centerY  then
+            print("up")
+            p = EnemyProjectile(centerX, centerY - 100 , piece_index)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 0, y = 1}
+            p.damage_dealt = 0.1
+        --vertical down
+        elseif (love.mouse.getX() > centerX - 40) and (love.mouse.getX() < centerX + 40) and love.mouse.getY() > centerY  then
+            print("down")
+            p = EnemyProjectile(centerX, centerY + 100 , piece_index)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 0, y = -1}
             p.damage_dealt = 0.1
         end
     end
@@ -257,6 +298,28 @@ function love.update(dt)
 end
 
 function love.draw()
+    --draw zones
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(0, 0, 0)
+    --straight up
+    love.graphics.line(centerX -40, centerY, centerX-40, 0)
+    love.graphics.line(centerX +40, centerY, centerX+40, 0)
+    --straight down
+    love.graphics.line(centerX -40, centerY, centerX-40, windowHeight)
+    love.graphics.line(centerX +40, centerY, centerX+40, windowHeight)
+
+    --straight left
+    love.graphics.line(centerX, centerY + 40, 0, centerY + 40)
+    love.graphics.line(centerX, centerY - 40, 0, centerY - 40)
+
+
+    --straight right
+    love.graphics.line(centerX, centerY + 40, windowWidth, centerY + 40)
+    love.graphics.line(centerX, centerY - 40, windowWidth, centerY - 40)
+
+
+
+
     --draw board
     love.graphics.setLineWidth(45)
     love.graphics.setColor(0, 0, 0)
