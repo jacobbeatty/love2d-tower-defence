@@ -90,6 +90,37 @@ function love.wheelmoved(x, y)
 
 end
 
+--detect if mouse is clicked
+function love.mousepressed(x, y, button, istouch)
+    if button == 1 then
+        if love.mouse.getX() < centerX and love.mouse.getY() < centerY then
+            p = EnemyProjectile(centerX - 80, centerY - 80 , PAWN)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = -1, y = 1}
+            p.damage_dealt = 0.1
+        elseif love.mouse.getX() > centerX and love.mouse.getY() < centerY then
+            p = EnemyProjectile(centerX + 80, centerY - 80 , PAWN)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 1, y = 1}
+            p.damage_dealt = 0.1
+        elseif love.mouse.getX() < centerX and love.mouse.getY() > centerY then
+            p = EnemyProjectile(centerX - 80, centerY + 80 , PAWN)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = -1, y = -1}
+            p.damage_dealt = 0.1
+        elseif love.mouse.getX() > centerX and love.mouse.getY() > centerY then
+            p = EnemyProjectile(centerX + 80, centerY + 80 , PAWN)
+            table.insert(projectiles, p)
+            p.speed = 5
+            p.direction = {x = 1, y = -1}
+            p.damage_dealt = 0.1
+        end
+    end
+end
+
 function love.update(dt)
     -- _G.dt = dt
     --round to two decimal places
