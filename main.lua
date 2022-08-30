@@ -38,30 +38,29 @@ function love.load()
     KNIGHT = 3
     PAWN = 4
 
-    --give the pieces their position
-    rookL = EnemyProjectile(0,windowHeight/2,ROOK)
-    rookR = EnemyProjectile(windowWidth-45,windowHeight/2,ROOK)
-    rookT = EnemyProjectile(windowWidth/2,0,ROOK)
-    rookB = EnemyProjectile(windowWidth/2,windowHeight-45,ROOK)
-    
-    bishopL = EnemyProjectile(0,0,BISHOP)
-    bishopR = EnemyProjectile(windowWidth-45,0,BISHOP)
-    bishopLB = EnemyProjectile(0,windowHeight-45,BISHOP)
-    bishopRB = EnemyProjectile(windowWidth-45,windowHeight-45,BISHOP)
-
     -- initialize the projectiles table
     projectiles={}
-    
-
-    bishopL.speed = 2
-    bishopL.direction = directionToCenter(bishopL)
-    bishopL.damage_dealt = 1
-
 end
 
 -- Draws projectile based on it's current position
 function drawProjectile(p)
-    love.graphics.draw(pieces[p.pieces_index], p.current_pos.x, p.current_pos.y, 0, 0.1, 0.1)
+    love.graphics.draw(pieces[p.pieces_index], p.current_pos.x - pieces[p.pieces_index]:getWidth()/2*.1, p.current_pos.y - pieces[p.pieces_index]:getHeight()/2*.1, 0, 0.1, 0.1)
+end
+
+-- Returns euclidean between two objects, assumes two projectiles
+function distance(a,b)
+    return (math.sqrt((a.current_pos.x-b.current_pos.x)^2 + (a.current_pos.y-b.current_pos.y)^2))
+end
+
+-- Returns true if equal within range of error
+function equals(val1, val2, err)
+    -- print(val1 .. " " .. val2 .. " " .. err)
+    if val1 == val2 then
+        return true
+    elseif val1 <= math.abs(val2 - err) then
+        return true
+    end
+    return false
 end
 
 -- Returns normalized direction to the center of the screen from given projectile
@@ -164,7 +163,6 @@ function love.update(dt)
             ep.speed = 5
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 1, y = 0}
-            print(ep.direction.x ..""..  ep.direction.y)
             ep.damage_dealt = 1
         elseif random_projectile == 6 then
             ep = EnemyProjectile(windowWidth-45,windowHeight/2,ROOK)
@@ -199,8 +197,8 @@ function love.update(dt)
     
         --if projectile hits player deal damage and remove projectile
         -- if p.current_pos.x > centerX - 50 and p.current_pos.x < centerX + 50 and p.current_pos.y > centerY - 50 and p.current_pos.y < centerY + 50 then
-        --BUG: Some finish early because of love2d sucking ass with how coords are handled
-        if (math.abs(p.current_pos.x - centerX) == 80) or math.abs(p.current_pos.y - centerY) == 80  then 
+        -- if (math.abs(p.current_pos.x - centerX) == 80) or math.abs(p.current_pos.y - centerY) == 80  then 
+        if equals(distance(p,{current_pos={x=centerX,y=centerY}}), 80, 170) then
             score = score - p.damage_dealt
             table.remove(projectiles, i)
         end
