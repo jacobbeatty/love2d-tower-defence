@@ -157,6 +157,8 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.update(dt)
+    colors = { 0, 255 }
+    random_color = {colors[math.random(#colors)], colors[math.random(#colors)], colors[math.random(#colors)]}
     --round to two decimal places
     time_remaining = math.floor((time_remaining - dt) * 100) / 100
     if time_remaining < 0 then
@@ -371,6 +373,8 @@ function love.draw()
     love.graphics.setLineWidth(45)
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("line", 0, 0, windowWidth, windowHeight)
+    love.graphics.setColor(0, 0, 0)
+
     --draw timer
     love.graphics.print(time_remaining, 40, 40)
     --draw score
@@ -405,6 +409,8 @@ function love.draw()
     
 
     --draw each existing projectile at its current position
+    love.graphics.setColor(random_color)
+
     for i, p in ipairs(projectiles) do
         drawProjectile(p)
     end 
