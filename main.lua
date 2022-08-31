@@ -8,7 +8,7 @@ function love.load()
 
     --lock mouse to window
     love.mouse.setGrabbed(true)
-    love.mouse.setVisible(true)
+    love.mouse.setVisible(false)
 
     windowHeight = love.graphics.getHeight()
     windowWidth = love.graphics.getWidth()
@@ -365,9 +365,14 @@ function love.draw()
     -- love.graphics.setColor(255, 0, 0)
     -- love.graphics.line(centerX, centerY, centerX + 10, centerY - 10)
     -- love.graphics.rotate(angle)
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), 5)
     love.graphics.setColor(255, 0, 0)
     love.graphics.circle("fill", player_pointer.current_pos.x, player_pointer.current_pos.y, 5)
-    --reset rotation
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.circle("fill", love.mouse.getX(), love.mouse.getY(), 5)
+    love.graphics.origin()
     
 
     --draw each existing projectile at its current position
