@@ -1,5 +1,5 @@
 love = require("love")
-local Projectile = require("projectile")
+local DogProjectile = require("projectile")
 local Pointer = require("playerpointer")
 
 function love.load()
@@ -102,63 +102,55 @@ function love.mousepressed(x, y, button, istouch)
         --upper left quadrant
         if love.mouse.getX() < centerX - 40 and love.mouse.getY() < centerY - 40 then
             print("upper left")
-            p = EnemyProjectile(centerX - 80, centerY - 80 , piece_index)
+            p = Projectile(centerX - 80, centerY - 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = -1, y = 1}
-            p.damage_dealt = 0.1
         --horizontal left
         elseif love.mouse.getX() < centerX - 40 and (love.mouse.getY() > centerY - 40) and (love.mouse.getY() < centerY + 40) then
             print("left")
-            p = EnemyProjectile(centerX - 100, centerY , piece_index)
+            p = Projectile(centerX - 100, centerY , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = -1, y = 0}
-            p.damage_dealt = 0.1
         --lower left quadrant
         elseif love.mouse.getX() < centerX - 40 and love.mouse.getY() > centerY + 40 then
-            p = EnemyProjectile(centerX - 80, centerY + 80 , piece_index)
+            p = Projectile(centerX - 80, centerY + 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = -1, y = -1}
-            p.damage_dealt = 0.1
         --upper right quadrant
         elseif love.mouse.getX() > centerX + 40 and love.mouse.getY() < centerY - 40 then
-            p = EnemyProjectile(centerX + 80, centerY - 80 , piece_index)
+            p = Projectile(centerX + 80, centerY - 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 1, y = 1}
-            p.damage_dealt = 0.1
         --horizontal right
         elseif love.mouse.getX() > centerX + 40 and (love.mouse.getY() > centerY - 40) and (love.mouse.getY() < centerY + 40) then
-            p = EnemyProjectile(centerX + 100, centerY , piece_index)
+            p = Projectile(centerX + 100, centerY , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 1, y = 0}
-            p.damage_dealt = 0.1
         --lower right quadrant
         elseif love.mouse.getX() > centerX + 40 and love.mouse.getY() > centerY + 40 then
-            p = EnemyProjectile(centerX + 80, centerY + 80 , piece_index)
+            p = Projectile(centerX + 80, centerY + 80 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 1, y = -1}
-            p.damage_dealt = 0.1
         --vertical up
         elseif (love.mouse.getX() > centerX - 40) and (love.mouse.getX() < centerX + 40) and love.mouse.getY() < centerY  then
             print("up")
-            p = EnemyProjectile(centerX, centerY - 100 , piece_index)
+            p = Projectile(centerX, centerY - 100 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 0, y = 1}
-            p.damage_dealt = 0.1
         --vertical down
         elseif (love.mouse.getX() > centerX - 40) and (love.mouse.getX() < centerX + 40) and love.mouse.getY() > centerY  then
             print("down")
-            p = EnemyProjectile(centerX, centerY + 100 , piece_index)
+            p = Projectile(centerX, centerY + 100 , piece_index)
             table.insert(projectiles, p)
             p.speed = 5
             p.direction = {x = 0, y = -1}
-            p.damage_dealt = 0.1
         end
     end
 end
@@ -204,7 +196,7 @@ function love.update(dt)
     -- draw a random projectile every 2 seconds
     spawn_timer = spawn_timer - dt
     if spawn_timer <= 0 then
-        random_projectile = math.random(1, 8)
+        random_projectile = math.random(1, 12)
         -- random_projectile = 5
         if random_projectile == 1 then
             ep = EnemyProjectile(0,0,BISHOP)
@@ -262,6 +254,33 @@ function love.update(dt)
             -- ep.direction = directionToCenter(ep)
             ep.direction = {x = 0, y = 1}
             ep.damage_dealt = 1
+        --add knight piece here
+        elseif random_projectile == 9 then
+            ep = EnemyProjectile(0,windowHeight/4,KNIGHT)
+            table.insert(projectiles, ep)
+            ep.speed = 3
+            ep.direction = {x = 1, y = 0}
+            ep.damage_dealt = 1
+        -- add other knights
+        elseif random_projectile == 10 then
+            ep = EnemyProjectile(windowWidth-45,windowHeight/4,KNIGHT)
+            table.insert(projectiles, ep)
+            ep.speed = 3
+            ep.direction = {x = -1, y = 0}
+            ep.damage_dealt = 1
+        -- add top knight
+        elseif random_projectile == 11 then
+            ep = EnemyProjectile(0,windowHeight*(3/4),KNIGHT)
+            table.insert(projectiles, ep)
+            ep.speed = 3
+            ep.direction = {x = 1, y = 0}
+            ep.damage_dealt = 1
+        elseif random_projectile == 12 then
+            ep = EnemyProjectile(windowWidth - 45,windowHeight*(3/4),KNIGHT)
+            table.insert(projectiles, ep)
+            ep.speed = 3
+            ep.direction = {x = -1, y = 0}
+            ep.damage_dealt = 1
         end
         spawn_timer = TIMER_START - level*.1
     end
@@ -279,11 +298,9 @@ function love.update(dt)
             score = score - p.damage_dealt
             table.remove(projectiles, i)
         end
-
-        --PLEASE FIX ME
         --if a projectile hits another projectile, remove both
         for j, p2 in ipairs(projectiles) do
-            if i ~= j and equals(distance(p,p2), 0, 10) then
+            if i ~= j and equals(distance(p,p2), 0, 10) and ((p2.damage_dealt and not p.damage_dealt) or (not p2.damage_dealt and p.damage_dealt)) then
                 --check if pieces are the same
                 -- doesnt work for some reason
                 if p.pieces_index == p2.pieces_index then
@@ -298,6 +315,18 @@ function love.update(dt)
         --if projectile goes off screen remove it
         if p.current_pos.x > windowWidth or p.current_pos.x < 0 or p.current_pos.y > windowHeight or p.current_pos.y < 0 then
             table.remove(projectiles, i)
+        end
+
+        if p.pieces_index == KNIGHT then
+            if p.starting_pos.x == 0 and p.starting_pos.y == windowHeight/4 and p.current_pos.x > 399 then
+                p.direction = {x = 0, y = -1}
+            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight/4 and p.current_pos.x < 401 then
+                p.direction = {x = 0, y = -1}
+            elseif p.starting_pos.x == 0 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x > 399 then
+                p.direction = {x = 0, y = 1}
+            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x < 401 then
+                p.direction = {x = 0, y = 1}
+            end
         end
 
     end 
