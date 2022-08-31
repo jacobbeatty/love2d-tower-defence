@@ -16,8 +16,9 @@ function love.load()
     centerX = windowWidth/2
 	centerY = windowHeight/2
 
-    time_remaining = 15
-    score = 99
+    time_constant = 10
+    time_remaining = time_constant
+    score = 999999
     level = 1
     TIMER_START = 2
     spawn_timer = TIMER_START
@@ -156,11 +157,10 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.update(dt)
-    -- _G.dt = dt
     --round to two decimal places
     time_remaining = math.floor((time_remaining - dt) * 100) / 100
     if time_remaining < 0 then
-        time_remaining = 15
+        time_remaining = time_constant
 
         level = level + 1
     end
@@ -318,13 +318,13 @@ function love.update(dt)
         end
 
         if p.pieces_index == KNIGHT then
-            if p.starting_pos.x == 0 and p.starting_pos.y == windowHeight/4 and p.current_pos.x > 399 then
+            if p.starting_pos.x == 0 and p.starting_pos.y == windowHeight/4 and p.current_pos.x > windowWidth/2 then
                 p.direction = {x = 0, y = -1}
-            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight/4 and p.current_pos.x < 401 then
+            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight/4 and p.current_pos.x < windowWidth/2 then
                 p.direction = {x = 0, y = -1}
-            elseif p.starting_pos.x == 0 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x > 399 then
+            elseif p.starting_pos.x == 0 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x > windowWidth/2 then
                 p.direction = {x = 0, y = 1}
-            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x < 401 then
+            elseif p.starting_pos.x == windowWidth-45 and p.starting_pos.y == windowHeight*(3/4) and p.current_pos.x < windowWidth/2 then
                 p.direction = {x = 0, y = 1}
             end
         end
